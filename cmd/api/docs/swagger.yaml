@@ -1,0 +1,2057 @@
+definitions:
+  domain.Product:
+    properties:
+      brand_id:
+        type: integer
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      product_category_id:
+        type: integer
+      product_image:
+        type: string
+    required:
+    - brand_id
+    - name
+    - product_category_id
+    type: object
+  domain.ProductBrand:
+    properties:
+      brand:
+        type: string
+      id:
+        type: integer
+    required:
+    - brand
+    type: object
+  domain.ProductCategory:
+    properties:
+      category_name:
+        type: string
+      id:
+        type: integer
+    type: object
+  domain.ProductItem:
+    properties:
+      display_size:
+        type: string
+      graphics_card:
+        type: string
+      id:
+        type: integer
+      model:
+        type: string
+      os:
+        type: string
+      price:
+        type: number
+      processor:
+        type: string
+      product_id:
+        type: integer
+      product_item_image:
+        type: string
+      qnty_in_stock:
+        type: integer
+      ram:
+        type: string
+      sku:
+        type: string
+      storage:
+        type: string
+    required:
+    - display_size
+    - model
+    - os
+    - price
+    - processor
+    - product_id
+    - qnty_in_stock
+    - ram
+    - sku
+    - storage
+    type: object
+  model.AddressInput:
+    properties:
+      city:
+        type: string
+      district:
+        type: string
+      house_number:
+        type: string
+      landmark:
+        type: string
+      pincode:
+        type: string
+      street:
+        type: string
+    type: object
+  model.AdminLogin:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  model.BlockUser:
+    properties:
+      reason:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  model.CreateCoupon:
+    properties:
+      code:
+        type: string
+      discount_max_amount:
+        type: number
+      discount_percent:
+        type: number
+      min_order_value:
+        type: number
+      valid_till:
+        type: string
+    type: object
+  model.NewAdminInfo:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      user_name:
+        type: string
+    required:
+    - email
+    - password
+    - user_name
+    type: object
+  model.NewCategory:
+    properties:
+      category_name:
+        type: string
+    type: object
+  model.OTPData:
+    properties:
+      phone:
+        type: string
+    required:
+    - phone
+    type: object
+  model.PlaceAllOrders:
+    properties:
+      payment_method_id:
+        type: integer
+      shipping_address_id:
+        type: integer
+    type: object
+  model.PlaceOrder:
+    properties:
+      coupon_id:
+        type: integer
+      payment_method_id:
+        type: integer
+      product_item_id:
+        type: integer
+      shipping_address_id:
+        type: integer
+    type: object
+  model.ReturnRequest:
+    properties:
+      order_id:
+        type: integer
+      reason:
+        type: string
+    type: object
+  model.UpdateCoupon:
+    properties:
+      code:
+        type: string
+      discount_max_amount:
+        type: number
+      discount_percent:
+        type: number
+      id:
+        type: integer
+      min_order_value:
+        type: number
+      valid_till:
+        type: string
+    type: object
+  model.UpdateOrder:
+    properties:
+      delivery_status_id:
+        type: integer
+      order_id:
+        type: integer
+      order_status_id:
+        type: integer
+    type: object
+  model.UserDataInput:
+    properties:
+      email:
+        type: string
+      f_name:
+        type: string
+      l_name:
+        type: string
+      password:
+        maxLength: 64
+        minLength: 8
+        type: string
+      phone:
+        type: string
+    required:
+    - email
+    - password
+    - phone
+    type: object
+  model.UserLoginEmail:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  model.UserLoginPhone:
+    properties:
+      password:
+        type: string
+      phone:
+        type: string
+    required:
+    - password
+    - phone
+    type: object
+  model.VerifyData:
+    properties:
+      otp:
+        type: string
+      phone:
+        $ref: '#/definitions/model.OTPData'
+    required:
+    - otp
+    - phone
+    type: object
+  response.Response:
+    properties:
+      data: {}
+      errors: {}
+      message:
+        type: string
+      status_code:
+        type: integer
+    type: object
+host: localhost:3000
+info:
+  contact: {}
+  description: Ecommerce REST API built using Go Lang, PSQL, REST API following Clean
+    Architecture.
+  title: Ecommerce REST API
+  version: "1.0"
+paths:
+  /addresses/:
+    post:
+      consumes:
+      - application/json
+      description: Add address
+      operationId: add-address
+      parameters:
+      - description: User address
+        in: body
+        name: user_address
+        required: true
+        schema:
+          $ref: '#/definitions/model.AddressInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: User can add address
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      description: Update address
+      operationId: update-address
+      parameters:
+      - description: User address
+        in: body
+        name: user_address
+        required: true
+        schema:
+          $ref: '#/definitions/model.AddressInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: User can update existing address
+      tags:
+      - Users
+  /admin/admins:
+    post:
+      consumes:
+      - application/json
+      description: Super admin can create a new admin from admin panel.
+      operationId: create-admin
+      parameters:
+      - description: New Admin details
+        in: body
+        name: admin_details
+        required: true
+        schema:
+          $ref: '#/definitions/model.NewAdminInfo'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Create a new admin from admin panel
+      tags:
+      - Admin
+  /admin/admins/{admin-id}/unblock:
+    put:
+      consumes:
+      - application/json
+      description: Super-admin can unblock a blocked admin
+      operationId: unblock-admin
+      parameters:
+      - description: ID of the admin to be unblocked
+        in: path
+        name: admin-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Unblock a blocked admin
+      tags:
+      - Admin
+  /admin/admins/{id}/block:
+    put:
+      consumes:
+      - application/json
+      description: Super-admin can block admins
+      operationId: block-admin
+      parameters:
+      - description: ID of the admin to be blocked
+        in: path
+        name: admin_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Block an admin
+      tags:
+      - Admin
+  /admin/brands/:
+    get:
+      consumes:
+      - application/json
+      description: Admins and users can view all brands
+      operationId: view-all-brands
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admin and users can all brands
+      tags:
+      - Product Brand
+    post:
+      consumes:
+      - application/json
+      description: Admin can create new brand
+      operationId: create-brand
+      parameters:
+      - description: new brand details
+        in: body
+        name: new_brand_details
+        required: true
+        schema:
+          $ref: '#/definitions/domain.ProductBrand'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admin can create new brand
+      tags:
+      - Product Brand
+    put:
+      consumes:
+      - application/json
+      description: Admin can update brand details
+      operationId: update-brand
+      parameters:
+      - description: brand details
+        in: body
+        name: brand_details
+        required: true
+        schema:
+          $ref: '#/definitions/domain.ProductBrand'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admin can update brand details
+      tags:
+      - Product Brand
+  /admin/brands/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Admin can delete a brand
+      operationId: delete-brand
+      parameters:
+      - description: brand id
+        in: path
+        name: brand_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admin can delete a brand
+      tags:
+      - Product Brand
+    get:
+      consumes:
+      - application/json
+      description: Admins and users can view a specific brand details with brand id
+      operationId: view-brand-by-id
+      parameters:
+      - description: brand id
+        in: path
+        name: brand_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admins and users can view a specific brand details with brand id
+      tags:
+      - Product Brand
+  /admin/categories/:
+    get:
+      consumes:
+      - application/json
+      description: Admin, users and unregistered users can see all the available categories
+      operationId: view-all-categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: View all available categories
+      tags:
+      - Product Category
+    post:
+      consumes:
+      - application/json
+      description: Admin can create new category from admin panel
+      operationId: create-category
+      parameters:
+      - description: New category name
+        in: body
+        name: category_name
+        required: true
+        schema:
+          $ref: '#/definitions/model.NewCategory'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Create new product category
+      tags:
+      - Product Category
+    put:
+      consumes:
+      - application/json
+      description: Admin can update category details
+      operationId: update-category
+      parameters:
+      - description: category info
+        in: body
+        name: category_details
+        required: true
+        schema:
+          $ref: '#/definitions/domain.ProductCategory'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admin can update category details
+      tags:
+      - Product Category
+  /admin/categories/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Users and admins can fetch details of a specific category using
+        id
+      operationId: find-category-by-id
+      parameters:
+      - description: category id
+        in: path
+        name: category_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Fetch details of a specific category using category id
+      tags:
+      - Product Category
+  /admin/coupons/:
+    get:
+      consumes:
+      - application/json
+      description: Admins and users can see all available coupons
+      operationId: view-coupons
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admins and users can see all available coupons
+      tags:
+      - Coupon
+    post:
+      consumes:
+      - application/json
+      description: Admin can create new coupons
+      operationId: create-coupon
+      parameters:
+      - description: details of new coupon to be created
+        in: body
+        name: new_coupon_details
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateCoupon'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admin can create new coupon
+      tags:
+      - Coupon
+    put:
+      consumes:
+      - application/json
+      description: Admin can update existing coupon
+      operationId: update-coupon
+      parameters:
+      - description: details of coupon to be updated
+        in: body
+        name: coupon_details
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateCoupon'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admin can update existing coupon
+      tags:
+      - Coupon
+  /admin/coupons/{coupon_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Admin can delete existing coupon
+      operationId: delete-coupon
+      parameters:
+      - description: details of coupon to be updated
+        in: path
+        name: coupon_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admin can delete existing coupon
+      tags:
+      - Coupon
+    get:
+      consumes:
+      - application/json
+      description: Admins and users can see coupon with id
+      operationId: view-coupon-by-id
+      parameters:
+      - description: coupon_id
+        in: path
+        name: coupon_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admins and users can see coupon with coupon id
+      tags:
+      - Coupon
+  /admin/dashboard:
+    get:
+      consumes:
+      - application/json
+      description: Admin can access dashboard and view details regarding orders, users,
+        products, etc.
+      operationId: admin-dashboard
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admin Dashboard
+      tags:
+      - Admin
+  /admin/login:
+    post:
+      consumes:
+      - application/json
+      description: Admin login
+      operationId: admin-login
+      parameters:
+      - description: Admin login credentials
+        in: body
+        name: admin_credentials
+        required: true
+        schema:
+          $ref: '#/definitions/model.AdminLogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admin Login
+      tags:
+      - Admin
+  /admin/logout:
+    get:
+      consumes:
+      - application/json
+      description: Logs out a logged-in admin from the E-commerce web api admin panel
+      operationId: admin-logout
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Admin Logout
+      tags:
+      - Admin
+  /admin/orders:
+    put:
+      consumes:
+      - application/json
+      description: Endpoint for updating order status
+      operationId: update-order
+      parameters:
+      - description: Details of the order to be updated
+        in: body
+        name: order_info
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateOrder'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admin can update order status of any order using order_id
+      tags:
+      - Order
+  /admin/product-items/:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint allows an admin user to create a new product item.
+      operationId: create-product-item
+      parameters:
+      - description: Product item details
+        in: body
+        name: product_item
+        required: true
+        schema:
+          $ref: '#/definitions/domain.ProductItem'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully added new product item
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Failed to add new product item
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unable to process the request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Creates a new product item
+      tags:
+      - Product Item
+    put:
+      consumes:
+      - application/json
+      description: Update an existing product item with new information.
+      operationId: update-product-item
+      parameters:
+      - description: Product item information to update
+        in: body
+        name: product_item
+        required: true
+        schema:
+          $ref: '#/definitions/domain.ProductItem'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Update a product item
+      tags:
+      - Product Item
+  /admin/product-items/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a product item from the system
+      operationId: delete-product-item
+      parameters:
+      - description: ID of the product item to be deleted
+        in: path
+        name: product_item_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Deletes a product item from the system
+      tags:
+      - Product Item
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a product item by its ID
+      operationId: find-product-item-by-id
+      parameters:
+      - description: Product item ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Retrieve a product item by ID
+      tags:
+      - Product Item
+  /admin/products/:
+    post:
+      consumes:
+      - application/json
+      description: Admins can create new product listings
+      operationId: create-product
+      parameters:
+      - description: new product details
+        in: body
+        name: new_product_details
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Product'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admin can create new product listings
+      tags:
+      - Product
+    put:
+      consumes:
+      - application/json
+      description: This endpoint allows an admin user to update a product's details.
+      operationId: update-product
+      parameters:
+      - description: Updated product details
+        in: body
+        name: updated_product_details
+        required: true
+        schema:
+          $ref: '#/definitions/domain.Product'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Successfully updated product
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Unable to update product
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Failed to read request body
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admin can update product details
+      tags:
+      - Product
+  /admin/products/{product_id}:
+    delete:
+      consumes:
+      - application/json
+      description: This endpoint allows an admin user to delete a product by ID.
+      operationId: delete-product
+      parameters:
+      - description: Product ID to delete
+        in: path
+        name: product_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Successfully deleted product
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Invalid product ID
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unable to delete product
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Deletes a product by ID
+      tags:
+      - Product
+  /admin/sales-report/:
+    get:
+      consumes:
+      - application/json
+      description: Admin can download sales report in .csv format
+      operationId: sales-report
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admin can download sales report
+      tags:
+      - Admin
+  /admin/users:
+    get:
+      consumes:
+      - application/json
+      description: Admin can list all registered users
+      operationId: list-all-users
+      parameters:
+      - description: Page number for pagination
+        in: query
+        name: page
+        type: integer
+      - description: Number of items to retrieve per page
+        in: query
+        name: limit
+        type: integer
+      - description: Search query string
+        in: query
+        name: query
+        type: string
+      - description: Filter criteria for the users
+        in: query
+        name: filter
+        type: string
+      - description: Sorting criteria for the users
+        in: query
+        name: sort_by
+        type: string
+      - description: Sorting in descending order
+        in: query
+        name: sort_desc
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admin can list all registered users
+      tags:
+      - Admin
+  /admin/users/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Admin can fetch a specific user details using user id
+      operationId: find-user-by-id
+      parameters:
+      - description: ID of the user to be fetched
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admin can fetch a specific user details using user id
+      tags:
+      - Admin
+  /admin/users/block:
+    put:
+      consumes:
+      - application/json
+      description: Admin can block a registered user
+      operationId: block-user
+      parameters:
+      - description: ID of the user to be blocked
+        in: body
+        name: user_id
+        required: true
+        schema:
+          $ref: '#/definitions/model.BlockUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admin can block a user
+      tags:
+      - Admin
+  /admin/users/unblock/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Admin can unblock a blocked user
+      operationId: unblock-user
+      parameters:
+      - description: ID of the user to be unblocked
+        in: path
+        name: user_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admin can unblock a blocked user
+      tags:
+      - Admin
+  /cart:
+    delete:
+      consumes:
+      - application/json
+      description: User can remove everything from cart at once
+      operationId: empty-cart
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Remove everything from cart
+      tags:
+      - Cart
+    get:
+      consumes:
+      - application/json
+      description: User can view cart and cart items
+      operationId: view-cart
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: User can view cart items and total
+      tags:
+      - Cart
+  /cart/add/{product_item_id}:
+    post:
+      consumes:
+      - application/json
+      description: User can add product item to the cart
+      operationId: add-to-cart
+      parameters:
+      - description: product_item_id
+        in: path
+        name: product_item_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: User can add a product item to the cart
+      tags:
+      - Cart
+  /cart/coupon/{coupon_id}:
+    post:
+      consumes:
+      - application/json
+      description: User can add coupon to the cart
+      operationId: add-coupon-to-cart
+      parameters:
+      - description: coupon_id
+        in: path
+        name: coupon_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: User can add a coupon to the cart
+      tags:
+      - Cart
+  /cart/remove/{product_item_id}:
+    delete:
+      consumes:
+      - application/json
+      description: User can remove product from cart
+      operationId: remove-from-cart
+      parameters:
+      - description: product_item_id
+        in: path
+        name: product_item_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Remove a product from the cart
+      tags:
+      - Cart
+  /login/email:
+    post:
+      consumes:
+      - application/json
+      description: Login as a user to access the ecommerce site
+      operationId: user-login-email
+      parameters:
+      - description: User details
+        in: body
+        name: user_details
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserLoginEmail'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: User Login
+      tags:
+      - Users
+  /login/phone:
+    post:
+      consumes:
+      - application/json
+      description: Login as a user to access the ecommerce site
+      operationId: user-login-phone
+      parameters:
+      - description: User details
+        in: body
+        name: user_details
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserLoginPhone'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: User Login-Phone
+      tags:
+      - Users
+  /logout:
+    get:
+      consumes:
+      - application/json
+      description: Logs out a logged-in user from the E-commerce web api
+      operationId: user-logout
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: User Logout
+      tags:
+      - Users
+  /orders/:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint for getting all orders associated with a user
+      operationId: view-all-orders
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Retrieves all orders of currently logged in user
+      tags:
+      - Order
+    post:
+      consumes:
+      - application/json
+      description: Buy a product item using product item ID.
+      operationId: buy-product-item
+      parameters:
+      - description: Order Details
+        in: body
+        name: order_details
+        required: true
+        schema:
+          $ref: '#/definitions/model.PlaceOrder'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully ordered product item
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Failed to order the product item
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: Unable to fetch authentication cookie
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unable to process the request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Buy product item
+      tags:
+      - Order
+  /orders/{order_id}:
+    get:
+      consumes:
+      - application/json
+      description: This function handles requests for retrieving the details of a
+        specific order identified by its order ID. The user must be authorized with
+        a valid cookie to view the order details.
+      operationId: view-order-by-id
+      parameters:
+      - description: Order ID
+        in: path
+        name: order_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully fetched order details
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Failed to fetch order details
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: Failed to authorize user
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Failed to read order ID from path
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Retrieves order details for a given order ID, if authorized.
+      tags:
+      - Order
+  /orders/buy-all:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint allows a user to purchase all items in their cart
+      operationId: buyAll
+      parameters:
+      - description: Order Details
+        in: body
+        name: order_details
+        required: true
+        schema:
+          $ref: '#/definitions/model.PlaceAllOrders'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Buy all items from the user's cart
+      tags:
+      - Order
+  /orders/cancel/{order_id}:
+    put:
+      consumes:
+      - application/json
+      description: Endpoint for cancelling an order associated with a user
+      operationId: cancel-order
+      parameters:
+      - description: ID of the order to be cancelled
+        in: path
+        name: order_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Cancels a specific order for the currently logged in user
+      tags:
+      - Order
+  /orders/return:
+    post:
+      consumes:
+      - application/json
+      description: User can request for returning products withing 15 days of order
+        delivery
+      operationId: return-request
+      parameters:
+      - description: Return details
+        in: body
+        name: return_request
+        required: true
+        schema:
+          $ref: '#/definitions/model.ReturnRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Accepted
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: User can request for returning products within 15 days of order delivery
+      tags:
+      - Order
+  /payments/razorpay/{order_id}:
+    get:
+      consumes:
+      - application/json
+      description: Users can make payment via Razorpay after placing orders
+      operationId: create-razorpay-payment
+      parameters:
+      - description: Order id
+        in: path
+        name: order_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Users can make payment
+      tags:
+      - Payment
+  /payments/success/:
+    get:
+      consumes:
+      - application/json
+      description: Handler for automatically updating payment details upon successful
+        payment
+      operationId: payment-success
+      parameters:
+      - description: Payment details
+        in: query
+        name: c
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Successfully updated payment details
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Failed to update payment details
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Handling successful payment
+      tags:
+      - Payment
+  /product-items/:
+    get:
+      consumes:
+      - application/json
+      description: view all product items for user
+      operationId: user-view-all-product-items
+      parameters:
+      - description: Page number for pagination
+        in: query
+        name: page
+        type: integer
+      - description: Number of items to retrieve per page
+        in: query
+        name: limit
+        type: integer
+      - description: Search query string
+        in: query
+        name: query
+        type: string
+      - description: Filter criteria for the product items
+        in: query
+        name: filter
+        type: string
+      - description: Sorting criteria for the product items
+        in: query
+        name: sort_by
+        type: string
+      - description: Sorting in descending order
+        in: query
+        name: sort_desc
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Handler function to view all product items
+      tags:
+      - Product Item
+  /products/:
+    get:
+      consumes:
+      - application/json
+      description: Admins and users can ses all available products
+      operationId: user-view-all-products
+      parameters:
+      - description: Page number for pagination
+        in: query
+        name: page
+        type: integer
+      - description: Number of items to retrieve per page
+        in: query
+        name: limit
+        type: integer
+      - description: Search query string
+        in: query
+        name: query
+        type: string
+      - description: Filter criteria for the product items
+        in: query
+        name: filter
+        type: string
+      - description: Sorting criteria for the product items
+        in: query
+        name: sort_by
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Admins and users can see all available products
+      tags:
+      - Product
+  /profile:
+    get:
+      consumes:
+      - application/json
+      description: Users can visit their profile
+      operationId: user-profile
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: User can view their profile
+      tags:
+      - Users
+  /send-otp:
+    post:
+      consumes:
+      - application/json
+      description: Send OTP to use's mobile
+      operationId: send-otp
+      parameters:
+      - description: User mobile number
+        in: body
+        name: user_mobile
+        required: true
+        schema:
+          $ref: '#/definitions/model.OTPData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Send OTP to user's mobile
+      tags:
+      - Otp
+  /signup:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user with the specified details.
+      operationId: create-user
+      parameters:
+      - description: User details
+        in: body
+        name: user_details
+        required: true
+        schema:
+          $ref: '#/definitions/model.UserDataInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Create a new user
+      tags:
+      - Users
+  /verify-otp:
+    post:
+      consumes:
+      - application/json
+      description: Validate the  OTP sent to use's mobile
+      operationId: validate-otp
+      parameters:
+      - description: OTP sent to user's mobile number
+        in: body
+        name: otp
+        required: true
+        schema:
+          $ref: '#/definitions/model.VerifyData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Validate the OTP to user's mobile
+      tags:
+      - Otp
+  /wishlist/:
+    delete:
+      consumes:
+      - application/json
+      description: User can remove all product items from wishlist
+      operationId: empty-wishlist
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: User can remove all product items from wishlist
+      tags:
+      - Wishlist
+    get:
+      consumes:
+      - application/json
+      description: User view product items in wishlist
+      operationId: view-wishlist
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: User can view items in wishlist
+      tags:
+      - Wishlist
+  /wishlist/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: User can remove product item from wishlist
+      operationId: remove-from-wishlist
+      parameters:
+      - description: ID of the product item to be removed from wishlist
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: User can remove product item from wishlist
+      tags:
+      - Wishlist
+    post:
+      consumes:
+      - application/json
+      description: User can add product item to wishlist
+      operationId: add-to-wishlist
+      parameters:
+      - description: ID of the product item to be added to wishlist
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: User can add product item to wishlist
+      tags:
+      - Wishlist
+swagger: "2.0"
